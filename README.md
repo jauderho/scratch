@@ -1,13 +1,11 @@
-# ghafiles
+# scratch
 
-This contains baseline GitHub Actions that may be useful for any new project. 
+It turns out that there is no actual `scratch` image which makes it difficult to provide a container image hash. This aims to fix that.
 
-- Adhere to least privilege principles for workflow permissions
-- Use of commit hashes for pinning GitHub Actions dependencies
-- Use of Dependabot to update commit hashes as necessary
-- Use of OpenSSF's [Security Scorecard](https://github.com/ossf/scorecard) (SCORECARD_TOKEN setup required)
-- Use of Step Security's [Harden Runner](https://github.com/step-security/harden-runner)
-- Codespell
-- Super-Linter
-- Semgrep (SEMGREP_APP_TOKEN setup required)
-- (optional) Sync to GitLab (GITLAB_TOKEN setup required)
+## Usage
+
+`FROM ghcr.io/jauderho/scratch:latest@sha256:e8ed3e52ddb3dbb203c117b2587fee3dc24656dcca78f01c4a5862d1eb603804`
+
+or 
+
+`FROM ghcr.io/jauderho/scratch:1.0.0@sha256:e8ed3e52ddb3dbb203c117b2587fee3dc24656dcca78f01c4a5862d1eb603804`
