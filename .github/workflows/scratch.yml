@@ -119,7 +119,7 @@ jobs:
       # https://github.com/anchore/syft
       
       - name: Install cosign
-        uses: sigstore/cosign-installer@c3667d99424e7e6047999fb6246c0da843953c65 # v1.4.1
+        uses: sigstore/cosign-installer@9e9de2292db7abb3f51b7f4808d98f0d347a8919 # v1.4.1
       
       - name: Install syft
         uses: anchore/sbom-action/download-syft@448520c4f19577ffce70a8317e619089054687e3 # v0.6.0
