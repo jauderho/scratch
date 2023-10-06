@@ -1,6 +1,6 @@
 # scratch
 
-It turns out that there is no actual `scratch` image which makes it difficult to provide a container image hash. This aims to fix that.
+It turns out that there is no actual `scratch` image which makes it difficult to provide a container image hash. This is an empty Docker image like the `scratch` image but has a hash along with SBOM.
 
 ## Usage
 
