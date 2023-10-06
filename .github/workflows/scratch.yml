@@ -12,7 +12,7 @@ on:
     - cron: "0 8 * * 1"
 
 env:
-  BUILD_VERSION: "v0.0.1"
+  BUILD_VERSION: "1.0.2"
   DOCKER_CLI_EXPERIMENTAL: enabled
   REPOSITORY: ${{ github.actor }}/${{ github.workflow }} 
 
@@ -101,6 +101,8 @@ jobs:
           #platforms: ${{ matrix.arch }}
           build-args: |
             BUILD_VERSION
+          sbom: true
+          provenance: true
           cache-from: type=gha, scope=${{ github.workflow }}
           cache-to: type=gha, scope=${{ github.workflow }}, mode=max
           labels: ${{ steps.docker_meta.outputs.labels }}
@@ -108,37 +110,4 @@ jobs:
             ghcr.io/${{ env.REPOSITORY }}:${{ env.BUILD_VERSION }}
             ghcr.io/${{ env.REPOSITORY }}:latest
 
-      # The following is for testing container signing and generating SBOMs
-      # Workaround for buildx bug: https://github.com/docker/build-push-action/issues/461
-      #
-      # Links
-      # https://githubhelp.com/chrisns/cosign-keyless-demo
-      # https://blog.chainguard.dev/zero-friction-keyless-signing-with-github-actions/
-      # https://github.com/mattmoor/zero-friction-actions/blob/main/.github/workflows/docker-publish.yml
-      # https://github.com/docker/roadmap/issues/269
-      # https://github.com/anchore/syft
-      
-      - name: Install cosign
-        uses: sigstore/cosign-installer@dd6b2e2b610a11fd73dd187a43d57cc1394e35f9 # v1.4.1
-      
-      - name: Install syft
-        uses: anchore/sbom-action/download-syft@4d571ad1038a9cc29d676154ef265ab8f9027042 # v0.6.0
-      
-      - name: Sign the image digest and generate SBOM
-        run: |
-          cosign sign ghcr.io/${{ env.REPOSITORY }}@${{ steps.push-step.outputs.digest }}
-          syft ghcr.io/${{ env.REPOSITORY }}@${{ steps.push-step.outputs.digest }} -o json > ghcr_sbom.json
-          cosign attest --predicate ghcr_sbom.json ghcr.io/${{ env.REPOSITORY }}@${{ steps.push-step.outputs.digest }}
-        env:
-          COSIGN_EXPERIMENTAL: 1
-
-        #syft attest -o syft-json docker.io/${{ env.REPOSITORY }}@${{ steps.push-step.outputs.digest }}
-        #syft attest -o syft-json ghcr.io/${{ env.REPOSITORY }}@${{ steps.push-step.outputs.digest }}
-         
-      - name: Verify the image digest and SBOM
-        run: |
-          cosign verify ghcr.io/${{ env.REPOSITORY }}@${{ steps.push-step.outputs.digest }}
-          cosign verify-attestation ghcr.io/${{ env.REPOSITORY }}@${{ steps.push-step.outputs.digest }}
-        env:
-          COSIGN_EXPERIMENTAL: 1
           
