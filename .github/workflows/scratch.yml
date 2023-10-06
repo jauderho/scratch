@@ -1,4 +1,4 @@
-name: scr
+name: scratch
 
 on:
   push:
@@ -6,13 +6,13 @@ on:
       - main
     paths:
       - Dockerfile
-      - .github/workflows/scr.yml
+      - .github/workflows/scratch.yml
   workflow_dispatch:
   schedule:
     - cron: "0 8 * * 1"
 
 env:
-  BUILD_VERSION: "1.0.0"
+  BUILD_VERSION: "1.0.2"
   DOCKER_CLI_EXPERIMENTAL: enabled
   REPOSITORY: ${{ github.actor }}/${{ github.workflow }} 
 
